@@ -4,7 +4,7 @@
 
 1. Get Last 30 days of (cryptic) crosswords from the Guardian
 2. I want them all merged into a single PDF file called `crosswords.pdf`
-3. There is no need to add any tests at this point
+3. The code will be unit tested.
 
 ## Notes
 

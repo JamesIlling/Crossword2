@@ -2,7 +2,13 @@
 
 internal class GuardianCrossword
 {
-    private readonly HttpClient _httpClient = new();
+    private readonly HttpClient _httpClient;
+    private readonly IConsole _console;
+    public GuardianCrossword(HttpClient client, IConsole console)
+    {
+        _httpClient = client;
+        _console = console;
+    }
 
     /// <summary>
     ///     Attempt to download a cryptic crossword for a specific date.
@@ -15,7 +21,7 @@ internal class GuardianCrossword
         var response = await _httpClient.GetAsync(url);
         if (response.IsSuccessStatusCode)
         {
-            Console.WriteLine($"Got crossword for {date:yyyy-MM-dd}");
+            _console.WriteLine($"Got crossword for {date:yyyy-MM-dd}");
             var filename = $"{date:yyyyMMdd}.pdf";
             await File.WriteAllBytesAsync(filename, await response.Content.ReadAsByteArrayAsync());
             return true;
