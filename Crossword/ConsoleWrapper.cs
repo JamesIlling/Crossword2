@@ -1,10 +1,9 @@
-﻿namespace Crossword
+﻿namespace Crossword;
+
+public class ConsoleWrapper : IConsole
 {
-    internal class ConsoleWrapper : IConsole
+    public void WriteLine(string message)
     {
-        public void WriteLine(string message)
-        {
-            Console.WriteLine(message);
-        }
+        Console.WriteLine(message);
     }
 }

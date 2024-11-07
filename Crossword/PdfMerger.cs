@@ -6,7 +6,7 @@ namespace Crossword;
 /// <summary>
 ///     This class provides PDF Utility functions.
 /// </summary>
-internal class PdfMerger
+public class PdfMerger : IPdfMerger
 {
     private readonly IConsole _console;
 
@@ -26,13 +26,16 @@ internal class PdfMerger
     {
         _console.WriteLine("Writing to single pdf");
         using var outPdf = new PdfDocument();
-        foreach (var file in sourceFiles)
+        if (sourceFiles.Any())
         {
-            using var pdfFile = PdfReader.Open(file, PdfDocumentOpenMode.Import);
-            CopyPages(pdfFile, outPdf);
-        }
+            foreach (var file in sourceFiles)
+            {
+                using var pdfFile = PdfReader.Open(file, PdfDocumentOpenMode.Import);
+                CopyPages(pdfFile, outPdf);
+            }
 
-        outPdf.Save(output);
+            outPdf.Save(output);
+        }
     }
 
     /// <summary>

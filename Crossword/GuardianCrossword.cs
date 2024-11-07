@@ -1,9 +1,10 @@
 ﻿namespace Crossword;
 
-internal class GuardianCrossword
+public class GuardianCrossword : ICrossword
 {
-    private readonly HttpClient _httpClient;
     private readonly IConsole _console;
+    private readonly HttpClient _httpClient;
+
     public GuardianCrossword(HttpClient client, IConsole console)
     {
         _httpClient = client;

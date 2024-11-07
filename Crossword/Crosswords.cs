@@ -1,37 +1,41 @@
 ﻿namespace Crossword;
 
-internal class Crosswords
+public class Crosswords
 {
     private const int Days = 30;
     private const string Path = "crosswords.pdf";
-    private readonly HttpClient _client;
-    private readonly IConsole _console;
-    public Crosswords(HttpClient client, IConsole console)
+    private readonly ICrossword _crossword;
+    private readonly IPdfMerger _pdfMerger;
+
+    public Crosswords(ICrossword crossword, IPdfMerger pdfMerger)
     {
-        _console = console;
-        _client = client;
+        _pdfMerger = pdfMerger;
+        _crossword = crossword;
     }
 
     public async Task GetCrosswords()
     {
         var files = new List<string>();
-        var guardian = new GuardianCrossword(_client, _console);
 
         // Get the last 30 days worth of crosswords
         for (var last = 0; last < Days; last++)
         {
             var date = DateTime.Now.AddDays(last - Days);
-            if (await guardian.DownloadAsync(date))
+            if (await _crossword.DownloadAsync(date))
             {
-                files.Add($"{date:yyyyMMdd}.pdf");
+                var file = $"{date:yyyyMMdd}.pdf";
+                if (File.Exists(file))
+                {
+                    files.Add(file);
+                }
             }
         }
 
         // Merger the Pdfs
-        var merger = new PdfMerger(_console);
-        merger.Merge(Path, files.ToArray());
 
-        foreach (var file in files)
+        _pdfMerger.Merge(Path, files.ToArray());
+
+        foreach (var file in files.Where(File.Exists))
         {
             File.Delete(file);
         }

@@ -2,7 +2,7 @@
 
 namespace Crossword;
 
-internal static class Program
+public static class Program
 {
     private static async Task Main()
     {
@@ -14,10 +14,12 @@ internal static class Program
         await crossword.GetCrosswords();
     }
 
-    private static void ConfigureServices(ServiceCollection services)
+    public static void ConfigureServices(ServiceCollection services)
     {
         services.AddSingleton<HttpClient>();
         services.AddSingleton<IConsole, ConsoleWrapper>();
         services.AddSingleton<Crosswords>();
+        services.AddSingleton<ICrossword, GuardianCrossword>();
+        services.AddSingleton<IPdfMerger, PdfMerger>();
     }
 }
