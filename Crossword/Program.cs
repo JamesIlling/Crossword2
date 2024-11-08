@@ -14,7 +14,7 @@ public static class Program
         await crossword.GetCrosswords();
     }
 
-    public static void ConfigureServices(ServiceCollection services)
+    private static void ConfigureServices(ServiceCollection services)
     {
         services.AddSingleton<HttpClient>();
         services.AddSingleton<IConsole, ConsoleWrapper>();
